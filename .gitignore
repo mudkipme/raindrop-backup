@@ -1,0 +1,7 @@
+node_modules
+/cache
+!/cache/.gitkeep
+/data
+!/data/.gitkeep
+/cover
+!/cover/.gitkeep

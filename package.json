@@ -1,0 +1,22 @@
+{
+  "name": "@mudkipme/raindrop-backup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "mudkip.me",
+  "license": "MIT",
+  "dependencies": {
+    "undici": "^5.10.0",
+    "yargs": "^17.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "@types/yargs": "^17.0.12",
+    "tsx": "^3.9.0",
+    "typescript": "^4.8.3"
+  }
+}
