@@ -92,3 +92,10 @@ export interface RaindropsResponse {
   count: number
   collectionId: number
 }
+
+export interface FirefoxBookmark {
+  title: string
+  uri: string
+  tags?: string
+  dateAdded: string
+}

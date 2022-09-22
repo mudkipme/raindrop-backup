@@ -1,7 +1,7 @@
 Raindrop Backup Tool
 ====================
 
-A simple script for backup bookmarks and permanent copies from Raindrop.
+A simple script to backup bookmarks and permanent copies from Raindrop.
 
 ## Usage
 
@@ -11,6 +11,7 @@ A simple script for backup bookmarks and permanent copies from Raindrop.
 4. Run `pnpm start metadata` to backup metadata
 5. Run `pnpm start cache` to backup permanent copies
 6. Run `pnpm start cover` to backup covers
+6. Run `pnpm start export` to export bookmarks to Firefox format for importing to wallabag
 
 ## License
 

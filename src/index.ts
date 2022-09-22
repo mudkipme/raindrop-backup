@@ -4,7 +4,7 @@ import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
 import { fetch } from 'undici'
 import RaindropClient from './client'
-import { RaindropsResponse } from './types'
+import { FirefoxBookmark, RaindropsResponse } from './types'
 
 yargs(hideBin(process.argv))
   .command('metadata', 'backup the metadata of bookmarks', () => {}, async () => {
@@ -42,6 +42,9 @@ yargs(hideBin(process.argv))
       const raindropsResp = JSON.parse(await readFile(join('data', file), { encoding: 'utf-8' })) as RaindropsResponse
 
       for (const item of raindropsResp.items) {
+        if (item.cache.status !== 'ready') {
+          continue
+        }
         const filename = join('cache', `${item._id}.html`)
         try {
           await stat(filename)
@@ -54,7 +57,7 @@ yargs(hideBin(process.argv))
       }
     }
   })
-  .command('cover', 'backup covers of bookmarks', () => {},async () => {
+  .command('cover', 'backup covers of bookmarks', () => {}, async () => {
     if (!process.env.RAINDROP_TOKEN) {
       throw new Error('token not found')
     }
@@ -79,6 +82,30 @@ yargs(hideBin(process.argv))
         }
       }
     }
+  })
+  .command('export', 'export bookmarks to Firefox format for importing to wallabag', () => {}, async () => {
+    const bookmarks: FirefoxBookmark[] = []
+    const files = await readdir('data')
+    for (const file of files) {
+      if (!file.match(/^raindrops_[-\d]+_\d+\.json$/)) {
+        continue
+      }
+
+      const raindropsResp = JSON.parse(await readFile(join('data', file), { encoding: 'utf-8' })) as RaindropsResponse
+
+      for (const item of raindropsResp.items) {
+        bookmarks.push({
+          title: item.title,
+          uri: item.link,
+          tags: item.tags.join(','),
+          dateAdded: Math.floor(Date.parse(item.created) / 1000)
+        })
+      }
+    }
+
+    const filename = join('data', 'bookmarks.json')
+    await writeFile(filename, JSON.stringify(bookmarks), { encoding: 'utf-8' })
+    console.log(`${filename} saved.`)
   })
   .demandCommand()
   .parse()
